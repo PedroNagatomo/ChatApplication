@@ -1,253 +1,234 @@
-ChatFX - Aplicacao de Chat em Tempo Real
-https://img.shields.io/badge/Java-17+-orange
-https://img.shields.io/badge/JavaFX-17+-blue
-https://img.shields.io/badge/Spring%2520Boot-3.0+-green
-https://img.shields.io/badge/License-MIT-yellow
+# ChatFX — Aplicação de Chat em Tempo Real
 
-Uma aplicacao de chat moderna e completa desenvolvida com JavaFX no frontend e Spring Boot no backend, com comunicacao em tempo real via WebSocket.
+[![Java](https://img.shields.io/badge/Java-17+-orange)](https://www.oracle.com/java/)
+[![JavaFX](https://img.shields.io/badge/JavaFX-17+-blue)](https://openjfx.io/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0+-green)](https://spring.io/projects/spring-boot)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Funcionalidades
-Autenticacao e Perfis
-Login e Registro com autenticacao JWT
+Uma aplicação de chat moderna composta por um backend em Spring Boot e um frontend em JavaFX. Comunicação em tempo real via WebSocket, autenticação por JWT e histórico de mensagens persistente.
 
-Perfis de usuario personalizaveis
+---
 
-Status online/ausente/ocupado
+## Índice
+- [Funcionalidades](#funcionalidades)
+- [Arquitetura do Projeto](#arquitetura-do-projeto)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação e execução](#instalação-e-execução)
+  - [Clonar o repositório](#clonar-o-repositório)
+  - [Executar o backend (Spring Boot)](#executar-o-backend-spring-boot)
+  - [Executar o frontend (JavaFX)](#executar-o-frontend-javafx)
+- [Endpoints da API & WebSocket](#endpoints-da-api--websocket)
+- [Configurações importantes](#configurações-importantes)
+- [Estrutura de pastas](#estrutura-de-pastas)
+- [Desenvolvimento e testes](#desenvolvimento-e-testes)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
+- [Contato](#contato)
 
-Avatar colorido gerado automaticamente
+---
 
-Biografia personalizada
+## Funcionalidades
+- Autenticação de usuários com JWT (login / registro)
+- Perfis de usuário personalizáveis (nome, status, biografia, avatar colorido)
+- Status online/ausente/ocupado
+- Salas de chat públicas e privadas
+- Mensagens em tempo real via WebSocket
+- Histórico de mensagens persistido (H2 por padrão; suporta MySQL/Postgres)
+- Interface moderna em JavaFX com CSS customizado e animações suaves
 
-Chat em Tempo Real
-Comunicacao instantanea via WebSocket
+---
 
-Salas de chat publicas e privadas
+## Arquitetura do projeto
+O projeto está dividido em dois módulos independentes:
 
-Historico de mensagens persistente
+- `backend/` — API REST em Spring Boot (porta padrão: 8080)
+- `frontend/` — Aplicação JavaFX (cliente gráfico)
 
-Interface responsiva e moderna
+Comunicação:
+- API REST para autenticação, usuários, salas e histórico
+- WebSocket para mensagens em tempo real
 
-Multiplos usuarios simultaneos
+---
 
-Interface Moderna
-Design limpo e intuitivo
+## Pré-requisitos
+- Java JDK 17 ou superior
+- Maven 3.6+
+- Git
+- (Opcional) JavaFX SDK se executar a partir de um JAR sem empacotar dependências
 
-CSS personalizado com efeitos visuais
+Links úteis:
+- Java: [https://www.oracle.com/java/](https://www.oracle.com/java/)
+- JavaFX: [https://openjfx.io/](https://openjfx.io/)
+- Maven: [https://maven.apache.org/](https://maven.apache.org/)
 
-Responsivo para diferentes tamanhos de tela
+---
 
-Icones e avatares coloridos
+## Instalação e execução
 
-Animaçoes suaves
+### 1. Clonar o repositório
+```bash
+git clone https://github.com/PedroNagatomo/ChatApplication.git
+cd ChatApplication
+```
 
-Pre-requisitos
-Antes de comecar, voce precisa ter instalado:
-
-Java JDK 17 ou superior (Download)
-
-Maven 3.6+ (Download)
-
-Git (Download)
-
-Instalacao
-1. Clone o repositorio
-bash
-git clone https://github.com/seu-usuario/chatfx.git
-cd chatfx
-2. Estrutura do projeto
-O projeto esta dividido em duas partes independentes:
-
-text
-chatfx/
-├── backend/      # API Spring Boot (porta 8080)
-└── frontend/     # Aplicacao JavaFX (interface grafica)
-Configuracao e Execucao
-PRIMEIRO: Execute o Backend (Spring Boot)
-Navegue ate a pasta do backend:
-
-bash
+### 2. Executar o backend (Spring Boot)
+Navegue até a pasta do backend:
+```bash
 cd backend
-Configure o banco de dados (opcional):
+```
 
-O projeto usa H2 Database em memoria por padrao. Para usar outro banco, edite o arquivo:
+Configuração (opcional):
+- Por padrão o projeto usa H2 em memória.
+- Para trocar para MySQL/Postgres, atualize `src/main/resources/application.properties` ou use variáveis de ambiente.
 
-text
-backend/src/main/resources/application.properties
-Compile e execute o backend:
-
-bash
-# Com Maven
+Exemplo rápido (modo desenvolvimento):
+```bash
+# Com Maven (execução direta)
 mvn clean spring-boot:run
 
-# Ou se preferir executar o JAR
+# Ou empacotar e executar o JAR
 mvn clean package
 java -jar target/chatfx-backend-1.0.0.jar
-Verifique se o backend esta rodando:
+```
 
-Acesse no seu navegador:
+Verificações:
+- API: [http://localhost:8080/api](http://localhost:8080/api)
+- Console H2 (se habilitado): [http://localhost:8080/h2-console](http://localhost:8080/h2-console)
+- WebSocket: `ws://localhost:8080/chat`
 
-API: http://localhost:8080/api
-
-Console H2: http://localhost:8080/h2-console
-
-WebSocket: ws://localhost:8080/chat
-
-Dados do H2 Console (se habilitado):
-
-URL: jdbc:h2:mem:chatdb
-
-Usuario: sa
-
-Senha: (deixe em branco)
-
-SEGUNDO: Execute o Frontend (JavaFX)
-Abra um novo terminal e navegue ate a pasta do frontend:
-
-bash
+### 3. Executar o frontend (JavaFX)
+Abra um novo terminal e navegue até o diretório do frontend:
+```bash
 cd frontend
-Configure as dependencias do JavaFX:
+```
 
-Certifique-se de que seu JavaFX SDK esta configurado. Se usar Maven, as dependencias ja estao no pom.xml.
-
-Compile o frontend:
-
-bash
+Executando com Maven (recomendado para desenvolvimento):
+```bash
 mvn clean compile
-Execute a aplicacao:
-
-bash
-# Com Maven
 mvn javafx:run
+```
 
-# Ou executando a classe principal
+Executando como JAR (dependendo de como o JAR é empacotado, pode ser necessário fornecer o module-path do JavaFX):
+```bash
+mvn clean package
 java --module-path "caminho/para/javafx-sdk/lib" \
      --add-modules javafx.controls,javafx.fxml \
      -jar target/chatfx-frontend-1.0.0.jar
-Para desenvolvimento com IDE:
+```
 
-Importe o projeto como Maven Project em sua IDE favorita (IntelliJ IDEA, Eclipse, VS Code) e execute a classe MainApp.java.
+Dica: Para desenvolvimento use sua IDE (IntelliJ, Eclipse, VS Code). Importe como Maven project e execute a classe principal (`MainApp`).
 
-Como Usar o ChatFX
-1. Primeiro Acesso
-Execute o backend (Spring Boot)
+---
 
-Execute o frontend (JavaFX)
+## Endpoints da API & WebSocket
 
-Na tela de login, clique em "Registrar"
+Autenticação
+- POST /api/auth/login — Login de usuário
+- POST /api/auth/register — Registro de novo usuário
 
-Crie uma nova conta
+Usuários
+- GET /api/users/me — Retorna usuário atual
+- GET /api/users/online — Lista usuários online
+- PUT /api/users/update — Atualiza perfil
 
-2. Criando uma Sala de Chat
-Apos login, clique no botao "Nova Sala"
-
-Digite um nome para a sala
-
-A sala aparecera na lista a esquerda
-
-3. Convidando Amigos
-Peca para seus amigos instalarem o ChatFX
-
-Cada um deve criar sua conta
-
-Todos veraõ as salas publicas automaticamente
-
-4. Editando Seu Perfil
-Clique no seu nome no canto superior direito
-
-Altere status, biografia ou avatar
-
-Clique em "Salvar"
-
-5. Enviando Mensagens
-Selecione uma sala na lista
-
-Digite sua mensagem no campo inferior
-
-Pressione Enter ou clique no botao de enviar
-
-Endpoints da API
-Autenticacao
-text
-POST   /api/auth/login     - Login de usuario
-POST   /api/auth/register  - Registro de novo usuario
-Usuarios
-text
-GET    /api/users/me       - Retorna usuario atual
-GET    /api/users/online   - Lista usuarios online
-PUT    /api/users/update   - Atualiza perfil
 Salas
-text
-GET    /api/rooms          - Lista todas as salas
-POST   /api/rooms/create   - Cria nova sala
+- GET /api/rooms — Lista todas as salas
+- POST /api/rooms/create — Cria nova sala
+
 Mensagens
-text
-GET    /api/messages/room/{id} - Historico da sala
+- GET /api/messages/room/{id} — Histórico da sala
+
 WebSocket
-text
-ws://localhost:8080/chat   - Conexao em tempo real
-Tecnologias Utilizadas
-Backend (Spring Boot)
-Spring Boot 3.0+ - Framework principal
+- ws://localhost:8080/chat — Endpoint para mensagens em tempo real
 
-Spring Security - Autenticacao e autorizacao
+(Confirme os caminhos no código caso tenham sido alterados.)
 
-Spring WebSocket - Comunicacao em tempo real
+---
 
-JPA/Hibernate - Persistencia de dados
+## Configurações importantes
 
-H2 Database - Banco em memoria (pode trocar por MySQL/PostgreSQL)
+Exemplo simplificado de `application.properties` (backend):
+```properties
+server.port=8080
 
-JWT - Tokens de autenticacao
+# H2 (padrão)
+spring.datasource.url=jdbc:h2:mem:chatdb
+spring.datasource.username=sa
+spring.datasource.password=
+spring.datasource.driverClassName=org.h2.Driver
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
 
-Maven - Gerenciamento de dependencias
+# JWT (substitua por um segredo forte)
+app.jwt.secret=troque-este-segredo
+app.jwt.expiration-ms=86400000
+```
 
-Frontend (JavaFX)
-JavaFX 17+ - Interface grafica
+Variáveis de ambiente recomendadas para produção:
+- SPRING_DATASOURCE_URL
+- SPRING_DATASOURCE_USERNAME
+- SPRING_DATASOURCE_PASSWORD
+- APP_JWT_SECRET
 
-CSS3 - Estilizacao moderna
+---
 
-WebSocket Client - Conexao com backend
+## Estrutura de pastas (resumida)
 
-Jackson - Serializacao JSON
+backend/
+- src/main/java/com/backend-chat/
+  - config/ — Configurações (Security, WebSocket)
+  - controller/ — Controladores REST
+  - model/ — Entidades (User, Message, Room)
+  - repository/ — Repositórios JPA
+  - service/ — Lógica de negócio
+  - security/ — Configurações de segurança
 
-Java 11+ - Linguagem base
+frontend/
+- src/main/java/com/chat-client/
+  - controller/ — Controladores FXML
+  - model/ — Modelos de dados
+  - service/ — Serviços (API, WebSocket)
+  - views/ — FXML
+  - styles.css — Estilos
 
-Estrutura de Pastas
-Backend
-text
-backend/src/main/java/com/backend-chat/
-├── config/           # Configuraçoes (Security, WebSocket)
-├── controller/       # Controladores REST
-├── model/           # Entidades (User, Message, Room)
-├── repository/      # Repositorios JPA
-├── service/         # Logica de negocio
-└── security/        # Configuraçoes de seguranca
-Frontend
-text
-frontend/src/main/java/com/chat-client/
-├── controller/      # Controladores FXML
-├── model/          # Modelos de dados
-├── service/        # Serviços (API, WebSocket)
-└── views/          # Arquivos FXML
-└── styles.css      # Estilos da aplicacao
-Comandos Rapidos
-Desenvolvimento
-bash
-# Executar backend
-cd backend && mvn spring-boot:run
+---
 
-# Executar frontend (em outro terminal)
-cd frontend && mvn javafx:run
+## Desenvolvimento e testes
+- Recomenda-se executar backend e frontend em terminais separados.
+- Para testes unitários e de integração, use os comandos Maven:
+```bash
+# Executar testes no backend
+cd backend
+mvn test
 
-# Limpar e recompilar tudo
-./scripts/clean-build.sh
-Producao
-bash
-# Criar JARs
-mvn clean package
+# Executar testes no frontend (se aplicável)
+cd frontend
+mvn test
+```
 
-# Executar backend
-java -jar backend/target/chatfx-backend-1.0.0.jar
+---
 
-# Executar frontend
-java -jar frontend/target/chatfx-frontend-1.0.0.jar
+## Contribuição
+Contribuições são bem-vindas! Para colaborar:
+1. Fork o repositório
+2. Crie uma branch feature: `git checkout -b feature/minha-feature`
+3. Faça commits claros e pequenos
+4. Abra um pull request descrevendo o que foi alterado
+
+Siga o padrão de código do projeto e escreva testes quando possível.
+
+---
+
+## Licença
+Este projeto está licenciado sob a MIT License — veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+## Contato
+Desenvolvedor: Pedro Nagatomo  
+Repositório: [https://github.com/PedroNagatomo/ChatApplication](https://github.com/PedroNagatomo/ChatApplication)
+
+Se quiser, posso:
+- Ajustar o README para incluir screenshots e GIFs de demonstração
+- Gerar badges dinâmicos de build/coverage (GitHub Actions)
+- Adicionar exemplos de requests (cURL / Postman collections)
